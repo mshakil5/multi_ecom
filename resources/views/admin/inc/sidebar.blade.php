@@ -222,6 +222,13 @@
         </li>
 
         <li class="nav-item">
+            <a href="{{ route('admin.mail-content') }}" class="nav-link {{ (request()->is('admin/mail-content*')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-paper-plane"></i>
+                <p>Mail Content</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
             <a href="{{ route('allcontactmessae') }}" class="nav-link {{ (request()->is('admin/contact-message')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-phone"></i>
                 <p>Contact Message</p>

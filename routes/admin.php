@@ -32,6 +32,7 @@ use App\Http\Controllers\Admin\SubCategoryController;
 use App\Http\Controllers\Admin\RelatedProductController;
 use App\Http\Controllers\Admin\BuyOneGetOneController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
+use App\Http\Controllers\Admin\MailContentController;
 
 
 Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], function(){
@@ -316,6 +317,12 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::post('/payment-gateway', [PaymentGatewayController::class, 'store']);
     Route::get('/payment-gateway/{id}/edit', [PaymentGatewayController::class, 'edit']);
     Route::post('/payment-gateway-update', [PaymentGatewayController::class, 'update']);
+
+    // mail content
+    Route::get('/mail-content', [MailContentController::class, 'index'])->name('admin.mail-content');
+    Route::post('/mail-content', [MailContentController::class, 'store']);
+    Route::get('/mail-content/{id}/edit', [MailContentController::class, 'edit']);
+    Route::post('/mail-content-update', [MailContentController::class, 'update']);
 
 });
   
