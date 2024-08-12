@@ -418,7 +418,23 @@
                     });
                 },
                 error: function(xhr) {
-                    console.log(xhr.responseText);
+                    if (xhr.status === 422) {
+                        let errors = xhr.responseJSON.errors;
+                        let errorMessage = '';
+                        $.each(errors, function(key, value) {
+                            errorMessage += value[0] + '\n';
+                        });
+
+                        swal({
+                            title: "Validation Error",
+                            text: errorMessage,
+                            icon: "error",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        });
+                    }
                 }
             });
         });
