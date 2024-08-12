@@ -32,7 +32,7 @@ class StockController extends Controller
                 return $i++;
             })
             ->addColumn('product_name', function ($row) {
-                return $row->product->name;
+                return $row->product ? $row->product->name : 'N/A';
             })
             ->addColumn('quantity_formatted', function ($row) {
                 return number_format($row->quantity, 0);

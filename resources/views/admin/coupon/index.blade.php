@@ -167,8 +167,6 @@
                             text: "OK",
                             className: "swal-button--confirm"
                         }
-                    }).then(() => {
-                        location.reload();
                     });
                 },
                 error: function(xhr, status, error) {
@@ -302,8 +300,16 @@
                 },
                 success: function(d){
                     if(d.success) {
-                        alert(d.message);
-                        location.reload();
+                        swal({
+                            text: "Deleted",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        }).then(() => {
+                            location.reload();
+                        });
                     }
                 },
                 error:function(d){

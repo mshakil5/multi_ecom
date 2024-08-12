@@ -525,8 +525,16 @@
                 },
                 success: function(d){
                     if(d.success) {
-                        alert(d.message);
-                        location.reload();
+                        swal({
+                            text: "Deleted",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        }).then(() => {
+                            location.reload();
+                        });
                     }
                 },
                 error:function(d){
@@ -648,8 +656,10 @@
                     is_featured: isChecked ? 1 : 0
                 },
                 success: function(d) {
-                    alert(d.message);
-                    location.reload();
+                    swal({
+                        text: "Updated successfully",
+                        icon: "success",
+                    });
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -671,8 +681,10 @@
                     is_popular: isChecked ? 1 : 0
                 },
                 success: function(d) {
-                    alert(d.message);
-                    location.reload();
+                    swal({
+                        text: "Updated successfully",
+                        icon: "success",
+                    });
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
@@ -694,19 +706,18 @@
                     is_trending: isChecked ? 1 : 0
                 },
                 success: function(d) {
-                    alert(d.message);
-                    location.reload();
+                    swal({
+                        text: "Updated successfully",
+                        icon: "success",
+                    });
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
                 }
             });
         });
-    });
-</script>
 
-<script>
-    $(document).ready(function() {
+        //Recent Toggle
         $('.toggle-recent').change(function() {
             var isChecked = $(this).is(':checked');
             var itemId = $(this).data('id');
@@ -720,8 +731,10 @@
                     is_recent: isChecked ? 1 : 0
                 },
                 success: function(d) {
-                    alert(d.message);
-                    location.reload();
+                    swal({
+                        text: "Updated successfully",
+                        icon: "success",
+                    });
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);

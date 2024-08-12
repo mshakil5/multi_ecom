@@ -172,8 +172,16 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(response) {
-                alert('Flash sell deleted successfully.');
-                 window.location.reload();
+                swal({
+                    text: "Deleted",
+                    icon: "success",
+                    button: {
+                        text: "OK",
+                        className: "swal-button--confirm"
+                    }
+                }).then(() => {
+                    location.reload();
+                });
             },
             error: function(xhr, status, error) {
                 console.error(xhr.responseText);

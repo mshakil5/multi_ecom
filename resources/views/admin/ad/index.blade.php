@@ -148,7 +148,7 @@
         "buttons": ["copy", "csv", "excel", "pdf", "print"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
-  </script>
+</script>
 
 <script>
   $(document).ready(function () {
@@ -224,18 +224,18 @@
               form_data.append("codeid", $("#codeid").val());
               
               $.ajax({
-                  url:upurl,
-                  type: "POST",
-                  dataType: 'json',
-                  contentType: false,
-                  processData: false,
-                  data:form_data,
-                  success: function(d){
-                      console.log(d);
-                      if (d.status == 303) {
-                          $(".ermsg").html(d.message);
-                          pagetop();
-                      }else if(d.status == 300){
+                url: upurl,
+                type: "POST",
+                dataType: 'json',
+                contentType: false,
+                processData: false,
+                data: form_data,
+                success: function(d) {
+                    console.log(d);
+                    if (d.status == 303) {
+                        $(".ermsg").html(d.message);
+                        pagetop();
+                    } else if (d.status == 300) {
                         swal({
                             text: "Updated successfully",
                             icon: "success",
@@ -246,11 +246,12 @@
                         }).then(() => {
                             location.reload();
                         });
-                  },
-                  error:function(d){
-                      console.log(d);
-                  }
-              });
+                    }
+                },
+                error: function(d) {
+                    console.log(d);
+                }
+            });
           }
           //Update
       });
@@ -281,8 +282,16 @@
                 },
                 success: function(d){
                     if(d.success) {
-                        alert(d.message);
-                        location.reload();
+                        swal({
+                            text: "Deleted",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        }).then(() => {
+                            location.reload();
+                        });
                     }
                 },
                 error:function(d){
@@ -345,8 +354,14 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(d) {
-                    alert(d.message);
-                    location.reload();
+                    swal({
+                          text: "Status updated",
+                          icon: "success",
+                          button: {
+                              text: "OK",
+                              className: "swal-button--confirm"
+                          }
+                      });
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);

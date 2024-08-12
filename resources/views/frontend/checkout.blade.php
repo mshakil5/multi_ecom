@@ -238,8 +238,8 @@
                     </div>
                     <div class="form-group mb-4">
                         <div class="custom-control custom-radio">
-                            <input type="radio" class="custom-control-input" name="payment_method" id="banktransfer" value="banktransfer">
-                            <label class="custom-control-label" for="banktransfer">Bank Transfer</label>
+                            <input type="radio" class="custom-control-input" name="payment_method" id="cashOnDelivery" value="cashOnDelivery">
+                            <label class="custom-control-label" for="cashOnDelivery">Cash On Delivery</label>
                         </div>
                     </div>
                     <button class="btn btn-block btn-primary font-weight-bold py-3" type="submit" id="placeOrderBtn">Place Order</button>

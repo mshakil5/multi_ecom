@@ -97,7 +97,14 @@
                         _token: '{{ csrf_token() }}'
                     },
                     success: function (response) {
-                        alert(response.message);
+                        swal({
+                            text: "Sent to system loss",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        });
                         $('#systemLossModal').modal('hide');
                         $('#stock-table').DataTable().ajax.reload();
                     },

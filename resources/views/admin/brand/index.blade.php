@@ -136,8 +136,14 @@
                     _token: "{{ csrf_token() }}"
                 },
                 success: function(d) {
-                    alert(d.message);
-                    location.reload();
+                    swal({
+                        text: "Status updated",
+                        icon: "success",
+                        button: {
+                            text: "OK",
+                            className: "swal-button--confirm"
+                        }
+                    });
                 },
                 error: function(xhr, status, error) {
                     console.error(xhr.responseText);
@@ -266,8 +272,16 @@
                 },
                 success: function(d){
                     if(d.success) {
-                        alert(d.message);
-                        location.reload();
+                        swal({
+                            text: "Deleted",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        }).then(() => {
+                            location.reload();
+                        });
                     }
                 },
                 error:function(d){

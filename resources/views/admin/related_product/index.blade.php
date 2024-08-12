@@ -261,8 +261,16 @@
                     data:{
                     },
                     success: function(d){
-                            alert(d.message);
-                            location.reload();
+                            swal({
+                                text: "Deleted",
+                                icon: "success",
+                                button: {
+                                    text: "OK",
+                                    className: "swal-button--confirm"
+                                }
+                            }).then(() => {
+                                location.reload();
+                            });
                         },
                         error:function(d){
                             // console.log(d);
