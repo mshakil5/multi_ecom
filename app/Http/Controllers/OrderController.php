@@ -259,7 +259,7 @@ class OrderController extends Controller
 
                             if ($supplierStock) {
                                 $totalPrice = (float) $item['quantity'] * (float) $supplierStock->price;
-                                $supplierStock->quantity -= $item['quantity'];
+                                // $supplierStock->quantity -= $item['quantity'];
                                 $supplierStock->save();
                             }
                             $orderDetail->supplier_id = $item['supplierId'];
@@ -478,7 +478,7 @@ class OrderController extends Controller
 
                             if ($supplierStock) {
                                 $totalPrice = (float) $item['quantity'] * (float) $supplierStock->price;
-                                $supplierStock->quantity -= $item['quantity'];
+                                // $supplierStock->quantity -= $item['quantity'];
                                 $supplierStock->save();
                             }
                             $orderDetail->supplier_id = $item['supplierId'];
@@ -722,7 +722,7 @@ class OrderController extends Controller
 
                             if ($supplierStock) {
                                 $totalPrice = (float) $item['quantity'] * (float) $supplierStock->price;
-                                $supplierStock->quantity -= $item['quantity'];
+                                // $supplierStock->quantity -= $item['quantity'];
                                 $supplierStock->save();
                             }
                             $orderDetail->supplier_id = $item['supplierId'];

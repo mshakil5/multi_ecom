@@ -156,7 +156,7 @@
             if (newValue <= stock) {
                 input.val(newValue);
 
-                let productId = row.data('product-id'); 
+                let productId = row.data('entity-id'); 
                 updateLocalStorage(productId, newValue);
                 updateCartTotal();
                 updateHiddenInputCart();
@@ -169,7 +169,7 @@
             let currentValue = parseInt(input.val());
             let newValue = Math.max(currentValue, 1); 
             input.val(newValue); 
-            let productId = $(this).closest('tr').data('product-id');
+            let productId = $(this).closest('tr').data('entity-id');
             updateLocalStorage(productId, newValue);
             updateCartTotal();
             updateHiddenInputCart(); 
