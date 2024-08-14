@@ -242,11 +242,14 @@
                             <label class="custom-control-label" for="cashOnDelivery">Cash On Delivery</label>
                         </div>
                     </div>
-                    <button class="btn btn-block btn-primary font-weight-bold py-3" type="submit" id="placeOrderBtn">Place Order</button>
-                    <script src="https://js.stripe.com/v3/"></script>
-                    <div id="card-element-container" style="display: none;">
-                        <div id="card-element"></div>
+                    <div class="mb-3">
+                        <script src="https://js.stripe.com/v3/"></script>
+                        <div id="card-element-container" style="display: none;">
+                            <div id="card-element"></div>
+                        </div>
                     </div>
+                    <button class="btn btn-block btn-primary font-weight-bold py-3" type="submit" id="placeOrderBtn">Place Order</button>
+                    
                 </div>
             </div>
         </div>
@@ -435,13 +438,43 @@
                                     if (result.paymentIntent.status === 'succeeded') {
                                         localStorage.removeItem('cart');
                                         updateCartCount();
-                                        window.location.href = response.redirectUrl;
+                                        window.open(response.redirectUrl, '_blank');
+                                        window.location.href = '{{ route("frontend.homepage") }}';
                                     }
                                 }
                             }).finally(function() {
                                 $('#loader').hide();
                             });
-                        } else {
+                        } else if (formData.payment_method === 'paypal') {
+                                swal({
+                                    text: "Please proceed to PayPal to complete your payment.",
+                                    icon: "info",
+                                    button: {
+                                        text: "OK",
+                                        className: "swal-button--confirm"
+                                    }
+                                }).then(() => {
+                                    localStorage.removeItem('cart');
+                                    window.open(response.redirectUrl, '_blank');
+                                    window.location.href = '{{ route("frontend.homepage") }}';
+                                });
+                            } 
+
+                          else if(formData.payment_method === 'cashOnDelivery') {
+                            swal({
+                                    text: "Order Placed Successfully. Thank you for shopping with us.",
+                                    icon: "success",
+                                    button: {
+                                        text: "OK",
+                                        className: "swal-button--confirm"
+                                    }
+                                }).then(() => {
+                                    localStorage.removeItem('cart');
+                                    window.open(response.redirectUrl, '_blank');
+                                    window.location.href = '{{ route("frontend.homepage") }}';
+                                });
+                          }  
+                        else {
                             localStorage.removeItem('cart');
                             updateCartCount();
                             window.location.href = response.redirectUrl;

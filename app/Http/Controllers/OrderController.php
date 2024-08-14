@@ -301,6 +301,10 @@ class OrderController extends Controller
                             } else {
                                 $totalPrice = (float) $item['quantity'] * (float) $entity->price;
                             }
+                            if ($entity->stock) {
+                                $entity->stock->quantity -= $item['quantity'];
+                                $entity->stock->save();
+                            }
                         }
                         $orderDetail->price_per_unit = $totalPrice / $item['quantity'];
                         $orderDetail->total_price = $totalPrice;
@@ -515,6 +519,10 @@ class OrderController extends Controller
                                 }
                             } else {
                                 $totalPrice = (float) $item['quantity'] * (float) $entity->price;
+                            }
+                            if ($entity->stock) {
+                                $entity->stock->quantity -= $item['quantity'];
+                                $entity->stock->save();
                             }
                         }
                         $orderDetail->price_per_unit = $totalPrice / $item['quantity'];
@@ -755,6 +763,10 @@ class OrderController extends Controller
                                 }
                             } else {
                                 $totalPrice = (float) $item['quantity'] * (float) $entity->price;
+                            }
+                            if ($entity->stock) {
+                                $entity->stock->quantity -= $item['quantity'];
+                                $entity->stock->save();
                             }
                         }
                         $orderDetail->price_per_unit = $totalPrice / $item['quantity'];
