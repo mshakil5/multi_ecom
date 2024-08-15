@@ -158,6 +158,9 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::get('/supplier/stocks/{id}', [SupplierController::class, 'showStocks'])->name('supplier.stocks');
     Route::post('/approve-supplier-products', [SupplierController::class, 'approveItem'])->name('approve-item');
 
+    Route::post('/toggle-supplier-status', [SupplierController::class, 'toggleStatus'])->name('supplier.toggleStatus');
+
+
     // Stock
     Route::get('/stocks', [StockController::class, 'getStocks'])->name('allstocks');
     Route::get('/stock', [StockController::class, 'getStock'])->name('allstock');

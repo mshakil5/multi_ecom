@@ -214,4 +214,13 @@ class SupplierController extends Controller
         }])->findOrFail($supplierId);
         return view('admin.supplier.orders', compact('supplier'));
     }
+
+    public function toggleStatus(Request $request)
+    {
+        $supplier = Supplier::findOrFail($request->id);
+        $supplier->status = $request->status;
+        $supplier->save();
+
+        return response()->json(['message' => 'Supplier status updated successfully']);
+    }
 }

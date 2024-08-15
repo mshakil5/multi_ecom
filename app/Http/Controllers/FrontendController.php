@@ -123,7 +123,8 @@ class FrontendController extends Controller
                         ->select('id', 'name', 'image', 'slug')
                         ->get();
 
-         $sliders = Slider::orderBy('id', 'desc')
+         $sliders = Slider::where('status', 1)
+                        ->orderBy('id', 'desc')
                         ->select('title', 'sub_title', 'image')
                         ->get();
 

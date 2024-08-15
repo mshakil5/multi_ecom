@@ -159,9 +159,10 @@
                                     <th>Phone</th>
                                     <th>Stock</th>
                                     <th>Balance</th>
-                                    <th>Vat Reg</th>
+                                    <th>Active</th>
+                                    <!-- <th>Vat Reg</th>
                                     <th>Address</th>
-                                    <th>Company</th>
+                                    <th>Company</th> -->
                                     <th>Transactions</th>
                                     <th>Orders</th>
                                     <th>Action</th>
@@ -185,24 +186,29 @@
                                         </div>
                                       <input type="hidden" id="supplierId" name="supplierId">  
                                     </td>
-                                    <td>{{ $data->vat_reg }}</td>
+                                    <td>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" class="custom-control-input toggle-status" id="customSwitchStatus{{ $data->id }}" data-id="{{ $data->id }}" {{ $data->status == 1 ? 'checked' : '' }}>
+                                            <label class="custom-control-label" for="customSwitchStatus{{ $data->id }}"></label>
+                                        </div>
+                                    </td>
+                                    <!-- <td>{{ $data->vat_reg }}</td>
                                     <td>{{ $data->address }}</td>
-                                    <td>{{ $data->company }}</td>
+                                    <td>{{ $data->company }}</td> -->
                                     <td>
                                         <a href="{{ route('supplier.transactions', ['supplierId' => $data->id]) }}" class="btn btn-info">
                                             Transactions
                                         </a>
                                     </td>
                                     <td>
-                                    @if ($data->order_details_count > 0)
-                                        <a href="{{ route('supplier.orders', ['supplierId' => $data->id]) }}" class="btn btn-info">
-                                            Orders ({{ $data->order_details_count }})
-                                        </a>
-                                    @else
-                                        0
-                                    @endif
-                                </td>
-
+                                        @if ($data->order_details_count > 0)
+                                            <a href="{{ route('supplier.orders', ['supplierId' => $data->id]) }}" class="btn btn-info">
+                                                Orders ({{ $data->order_details_count }})
+                                            </a>
+                                        @else
+                                            0
+                                        @endif
+                                    </td>
                                     <td>
                                         <a id="EditBtn" rid="{{ $data->id }}">
                                             <i class="fa fa-edit" style="color: #2196f3; font-size:16px;"></i>
@@ -233,6 +239,39 @@
         "buttons": ["copy", "csv", "excel", "pdf", "print"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
+</script>
+
+<script>
+    $(document).ready(function() {
+    $('.toggle-status').change(function() {
+        var isChecked = $(this).is(':checked');
+        var supplierId = $(this).data('id');
+
+        $.ajax({
+            url: '/admin/toggle-supplier-status',
+            method: 'POST',
+            data: {
+                _token: '{{ csrf_token() }}',
+                id: supplierId,
+                status: isChecked ? 1 : 0
+            },
+            success: function(response) {
+                swal({
+                    text: "Supplier status updated successfully",
+                    icon: "success",
+                });
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                swal({
+                    text: "There was an error updating the supplier status.",
+                    icon: "error",
+                });
+            }
+        });
+    });
+});
+
 </script>
 
 <script>
