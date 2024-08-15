@@ -152,7 +152,17 @@
             </tr>
 
             <tr class="details">
-                <td>{{ $order->payment_method }}</td>
+                <td>
+                    @if($order->payment_method === 'paypal')
+                        PayPal
+                    @elseif($order->payment_method === 'stripe')
+                        Stripe
+                    @elseif($order->payment_method === 'cashOnDelivery')
+                        Cash On Delivery
+                    @else
+                        {{ $order->payment_method }}
+                    @endif
+                </td>
                 <td>{{ $order->net_amount }} {{ $currency }}</td>
             </tr>
 
