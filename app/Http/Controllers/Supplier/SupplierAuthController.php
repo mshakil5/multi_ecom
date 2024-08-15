@@ -9,6 +9,11 @@ use App\Models\Supplier;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\VerifyEmail;
+use Illuminate\Support\Facades\Redirect;
 
 class SupplierAuthController extends Controller
 {
@@ -66,12 +71,36 @@ class SupplierAuthController extends Controller
         return view('supplier.register');
     }
 
+    // public function register(Request $request)
+    // {
+    //     // dd($request->all());
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => 'required|string|max:255',
+    //         'email' => 'required|string|email|max:255|unique:suppliers',
+    //         'phone' => 'nullable|string|max:20',
+    //         'password' => 'required|string|min:6|confirmed',
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         return redirect()->back()->withErrors($validator)->withInput();
+    //     }
+    //     $supplier = new Supplier();
+    //     $supplier->name = $request->name;
+    //     $supplier->email = $request->email;
+    //     $supplier->phone = $request->phone;
+    //     $supplier->password = Hash::make($request->password);
+    //     $supplier->slug = Str::slug($request->name);
+    //     $supplier->status = 0;
+    //     $supplier->save();
+
+    //     return redirect()->route('supplier.login')->with('status', 'Registration successful! Please login.');
+    // }
+
     public function register(Request $request)
     {
-        // dd($request->all());
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:suppliers',
+            'email' => 'required|string|email|max:255|unique:suppliers,email',
             'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:6|confirmed',
         ]);
@@ -79,16 +108,49 @@ class SupplierAuthController extends Controller
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        $token = Str::random(60);
+
+        Cache::put('registration_' . $token, [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+            'slug' => Str::slug($request->name),
+            'token' => $token,
+        ], now()->addMinutes(5));
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'supplier.verify', now()->addMinutes(5), [
+                'token' => $token
+            ]
+        );
+
+        Mail::to($request->email)->send(new VerifyEmail($request->name, $verificationUrl));
+
+        return Redirect::route('supplier.login')->with('status', 'Registration successful! Please check your email to verify your account.');
+    }
+
+    public function verify($token)
+    {
+        $data = Cache::get('registration_' . $token);
+
+        if (!$data) {
+            return Redirect::route('supplier.login')->with('status', 'Invalid or expired verification link.');
+        }
+
         $supplier = new Supplier();
-        $supplier->name = $request->name;
-        $supplier->email = $request->email;
-        $supplier->phone = $request->phone;
-        $supplier->password = Hash::make($request->password);
-        $supplier->slug = Str::slug($request->name);
-        $supplier->status = 0;
+        $supplier->name = $data['name'];
+        $supplier->email = $data['email'];
+        $supplier->phone = $data['phone'];
+        $supplier->password = $data['password'];
+        $supplier->slug = $data['slug'];
+        $supplier->status = 1;
         $supplier->save();
 
-        return redirect()->route('supplier.login')->with('status', 'Registration successful! Please login.');
+        Cache::forget('registration_' . $token);
+
+        return Redirect::route('supplier.login')->with('status', 'Email successfully verified. You can now log in.');
     }
 
 }

@@ -119,14 +119,14 @@ class FrontendController extends Controller
         $section_status = SectionStatus::first();
         $advertisements = Ad::where('status', 1)->select('type', 'link', 'image')->get();
 
-        $suppliers = Supplier::orderBy('id', 'desc')
+        $suppliers = Supplier::where('status', 1)
+                        ->orderBy('id', 'desc')
                         ->select('id', 'name', 'image', 'slug')
                         ->get();
 
-         $sliders = Slider::where('status', 1)
-                        ->orderBy('id', 'desc')
-                        ->select('title', 'sub_title', 'image')
-                        ->get();
+         $sliders = Slider::orderBy('id', 'desc')
+                 ->select('title', 'sub_title', 'image')
+                 ->get();
 
         $categories = Category::where('status', 1)->select('name', 'image', 'slug')->orderBy('id', 'desc')->take(2)->get();
 
