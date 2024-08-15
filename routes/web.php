@@ -135,6 +135,8 @@ Route::group(['prefix' =>'manager/', 'middleware' => ['auth', 'is_manager']], fu
 
 Route::get('/supplier/login', [SupplierAuthController::class, 'showLoginForm'])->name('supplier.login');
 Route::post('/supplier/login', [SupplierAuthController::class, 'login'])->name('supplier.login');
+Route::get('/supplier/register', [SupplierAuthController::class, 'showRegisterForm'])->name('supplier.register');
+Route::post('/supplier/register', [SupplierAuthController::class, 'register'])->name('supplier.register');
 
 Route::prefix('supplier')->middleware(['auth.supplier'])->group(function () {
     Route::get('dashboard', [SupplierController::class, 'dashboard'])->name('supplier.dashboard');
