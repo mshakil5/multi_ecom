@@ -11,6 +11,7 @@ use App\Models\Purchase;
 use App\Models\OrderDetails;
 use App\Models\Order;
 use App\Models\Transaction;
+use App\Models\PurchaseReturn;
 
 class SupplierController extends Controller
 {
@@ -142,6 +143,12 @@ class SupplierController extends Controller
                                 ->select('id', 'amount', 'date', 'note')
                                 ->get();
         return view('supplier.transaction', compact('transactions'));
+    }
+
+    public function stockReturnHistory()
+    {
+        $purchaseReturns = PurchaseReturn::where('supplier_id', Auth::guard('supplier')->user()->id)->with('product') ->orderBy('id', 'desc')->get();
+        return view('supplier.stock_return_history', compact('purchaseReturns'));
     }
 
 }

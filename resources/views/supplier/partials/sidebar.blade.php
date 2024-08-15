@@ -18,7 +18,14 @@
         <li class="nav-item">
             <a href="{{ route('productPurchaseHistory.supplier') }}" class="nav-link {{ (request()->is('supplier/sold-history')) ? 'active' : '' }}">
                 <i class="nav-icon fas fa-history"></i>
-                <p>Sold History</p>
+                <p>Sold To Shop</p>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="{{ route('returnHistory.supplier') }}" class="nav-link {{ (request()->is('supplier/return-history')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-undo-alt"></i>
+                <p>Returned From Shop</p>
             </a>
         </li>
 

@@ -159,6 +159,8 @@ Route::prefix('supplier')->middleware(['auth.supplier'])->group(function () {
 
     Route::get('/supplier/transaction', [SupplierController::class, 'supplierTransaction'])->name('supplier.transaction');
 
+    Route::get('/return-history', [SupplierController::class, 'stockReturnHistory'])->name('returnHistory.supplier');
+
 });
 
  

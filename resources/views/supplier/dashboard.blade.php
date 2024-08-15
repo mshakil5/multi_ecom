@@ -38,6 +38,31 @@
             <a href="{{ route('productPurchaseHistory.supplier') }}" class="small-box-footer">All Sales <i class="fas fa-arrow-circle-right"></i></a>
           </div>
         </div>
+
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-success">
+            <div class="inner">
+
+              @php
+                  $supplierId = Auth::guard('supplier')->user()->id;
+                  $supplier = \App\Models\Supplier::findOrFail($supplierId);
+                  $productIds = $supplier->supplierStocks()->pluck('product_id');
+                  $orderCount = \App\Models\Order::whereHas('orderDetails', function ($query) use ($productIds) {
+                      $query->whereIn('product_id', $productIds);
+                  })->count();
+              @endphp
+
+              <h3>{{ $orderCount }}</h3>
+
+              <p>Orders Count</p>
+            </div>
+            <div class="icon">
+              <i class="ion ion-bag"></i>
+            </div>
+            <a href="{{ route('order.supplier') }}" class="small-box-footer">All Sales <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
     </div>
   </section>
 @endsection
