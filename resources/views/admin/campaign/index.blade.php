@@ -90,6 +90,8 @@
                                     <th>Title</th>
                                     <th>Start Date</th>
                                     <th>End Date</th>
+                                    <th>Banner Image</th>
+                                    <th>Small Image</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -100,6 +102,23 @@
                                     <td>{{ \Carbon\Carbon::parse($data->start_date)->format('d-m-Y') }}</td>
                                     <td>{{ \Carbon\Carbon::parse($data->end_date)->format('d-m-Y') }}</td>
                                     <td>
+                                        @if($data->banner_image)
+                                            <img src="{{ asset('images/campaign_banner/' . $data->banner_image) }}" alt="Banner Image" style="width: 100px; height: auto;">
+                                        @else
+                                            No Banner Image
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($data->small_image)
+                                            <img src="{{ asset('images/campaign_small/' . $data->small_image) }}" alt="Small Image" style="width: 100px; height: auto;">
+                                        @else
+                                            No Small Image
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('campaign.details', $data->id) }}" title="View Details">
+                                            <i class="fa fa-eye" style="color: green; font-size:16px;"></i>
+                                        </a>
                                         <a class="EditBtn" rid="{{ $data->id }}">
                                             <i class="fa fa-edit" style="color: #2196f3; font-size:16px;"></i>
                                         </a>

@@ -252,6 +252,12 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::post('/campaign-update', [CampaignController::class, 'campaignUpdate']);
     Route::get('/campaign/{id}', [CampaignController::class, 'campaignDelete']);
 
+    Route::get('/campaign-requests', [CampaignController::class, 'getCampaignRequests'])->name('allcampaignRequests');
+    Route::get('/campaign-request/{id}', [CampaignController::class, 'getCampaignRequestDetails'])->name('campaign.request.details.admin');
+    Route::post('/campaign-request/status/update', [CampaignController::class, 'updateStatus'])->name('campaign.request.status.update');
+    Route::post('/campaign-request', [CampaignController::class, 'campaignRequestStore'])->name('admin.campaign.request.store');
+    Route::get('/campaign/{id}/details', [CampaignController::class, 'showDetails'])->name('campaign.details');
+
     //In House sell
     Route::get('/in-house-sell', [InHouseSellController::class, 'inHouseSell'])->name('inhousesell');
     Route::post('/in-house-sell', [InHouseSellController::class, 'inHouseSellStore'])->name('inhousesell');

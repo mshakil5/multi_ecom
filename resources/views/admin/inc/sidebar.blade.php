@@ -256,11 +256,27 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a href="{{ route('allcampaign') }}" class="nav-link {{ (request()->is('admin/campaigns')) ? 'active' : '' }}">
+        <li class="nav-item dropdown {{ request()->is('admin/campaign*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link dropdown-toggle {{ request()->is('admin/campaign*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-bullhorn"></i>
-                <p>Campaigns</p>
+                <p>
+                    Campaign <i class="fas fa-angle-left right"></i>
+                </p>
             </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('allcampaign') }}" class="nav-link {{ request()->routeIs('allcampaign') ? 'active' : '' }}">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Campaigns</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('allcampaignRequests') }}" class="nav-link {{ request()->routeIs('allcampaignRequests') ? 'active' : '' }}">
+                        <i class="fas fa-list nav-icon"></i>
+                        <p>Campaign Requests</p>
+                    </a>
+                </li>
+            </ul>
         </li>
 
         <li class="nav-item dropdown {{ request()->is('admin/create-special-offer*') || request()->is('admin/special-offers*') || request()->is('admin/special-offer-history*') ? 'menu-open' : '' }}">

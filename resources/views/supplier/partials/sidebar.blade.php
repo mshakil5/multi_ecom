@@ -49,6 +49,29 @@
                 <p>Transactions</p>
             </a>
         </li>
-        
+
+        <li class="nav-item dropdown {{ request()->is('supplier/campaign*') ? 'menu-open' : '' }}">
+            <a href="#" class="nav-link dropdown-toggle {{ request()->is('supplier/campaign*') ? 'active' : '' }}">
+                <i class="nav-icon fas fa-bullhorn"></i>
+                <p>
+                    Campaign Requests <i class="fas fa-angle-left right"></i>
+                </p>
+            </a>
+            <ul class="nav nav-treeview">
+                <li class="nav-item">
+                    <a href="{{ route('supplier.campaignRequest') }}" class="nav-link {{ request()->routeIs('supplier.campaignRequest') ? 'active' : '' }}">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Create New Request</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('supplier.campaignRequests') }}" class="nav-link {{ request()->routeIs('supplier.campaignRequests') ? 'active' : '' }}">
+                        <i class="fas fa-list nav-icon"></i>
+                        <p>My Campaign Requests</p>
+                    </a>
+                </li>
+            </ul>
+        </li>
+    
     </ul>
   </nav>

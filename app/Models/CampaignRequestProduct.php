@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Campaign extends Model
+class CampaignRequestProduct extends Model
 {
     use HasFactory;
 
-    public function campaignRequests()
+    public function product()
     {
-        return $this->hasMany(CampaignRequest::class);
+        return $this->belongsTo(Product::class, 'product_id');
     }
 }

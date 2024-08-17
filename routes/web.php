@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\FlashSellController;
 use App\Http\Controllers\Supplier\SupplierAuthController;
 use App\Http\Controllers\Supplier\SupplierController;
 use App\Http\Controllers\Supplier\StockController;
+use App\Http\Controllers\Supplier\CampaignController;
   
 
 // cache clear
@@ -160,6 +161,13 @@ Route::prefix('supplier')->middleware(['auth.supplier'])->group(function () {
     Route::get('/supplier/transaction', [SupplierController::class, 'supplierTransaction'])->name('supplier.transaction');
 
     Route::get('/return-history', [SupplierController::class, 'stockReturnHistory'])->name('returnHistory.supplier');
+
+    //Campaign Request
+    Route::get('/campaign-request', [CampaignController::class, 'campaignRequest'])->name('supplier.campaignRequest');
+    Route::post('/campaign-request', [CampaignController::class, 'campaignRequestStore'])->name('supplier.campaign.request.store');
+    Route::get('/campaign-requests', [CampaignController::class, 'campaignRequests'])->name('supplier.campaignRequests');
+    Route::get('/campaign-request/{id}', [CampaignController::class, 'getCampaignRequestDetails'])->name('campaign.request.details');
+
 
 });
 

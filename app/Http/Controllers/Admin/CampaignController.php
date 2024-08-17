@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Campaign;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use App\Models\CampaignRequest;
+use App\Models\Product;
+use App\Models\CampaignRequestProduct;
 
 class CampaignController extends Controller
 {
@@ -128,6 +131,88 @@ class CampaignController extends Controller
         }
         $campaign->delete();
         return response()->json(['message' => 'Campaign deleted successfully']);
+    }
+
+    public function getCampaignRequests()
+    {
+        $products = Product::orderBy('id', 'desc')->get();
+        $campaigns = Campaign::orderBy('id', 'desc')->get();
+
+        $data = CampaignRequest::with(['campaign', 'supplier', 'campaignRequestProducts.product'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.campaign.requests', compact('data', 'products', 'campaigns'));
+    }
+
+    public function getCampaignRequestDetails($id)
+    {
+        $campaignRequest = CampaignRequest::with('campaign', 'campaignRequestProducts.product')->find($id);
+
+        if ($campaignRequest) {
+            $products = $campaignRequest->campaignRequestProducts;
+            return response()->json([
+                'campaign' => $campaignRequest->campaign,
+                'products' => $products
+            ]);
+        }
+
+        return response()->json(['error' => 'Campaign request not found'], 404);
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'campaign_request_id' => 'required|exists:campaign_requests,id',
+            'status' => 'required|in:0,1,2',
+        ]);
+
+        $campaignRequest = CampaignRequest::find($request->campaign_request_id);
+        $campaignRequest->status = $request->status;
+        $campaignRequest->save();
+
+        return response()->json([
+            'success' => true,
+            'status' => $campaignRequest->status,
+        ]);
+    }
+
+    public function campaignRequestStore(Request $request)
+    {
+        $request->validate([
+            'campaign_id' => 'required|exists:campaigns,id',
+            'products' => 'required|array',
+            'products.*.product_id' => 'required|exists:products,id',
+            'products.*.quantity' => 'required|numeric|min:1',
+            'products.*.campaign_price' => 'required|numeric|min:0',
+            'products.*.product_size' => 'nullable|string|max:255',
+            'products.*.product_color' => 'nullable|string|max:255',
+        ]);
+
+        $campaignRequest = new CampaignRequest();
+        $campaignRequest->campaign_id = $request->campaign_id;
+        $campaignRequest->status = 1;
+        $campaignRequest->created_by = auth()->user()->id; 
+        $campaignRequest->save();
+
+        foreach ($request->products as $product) {
+            $campaignRequestProduct = new CampaignRequestProduct();
+            $campaignRequestProduct->campaign_request_id = $campaignRequest->id;
+            $campaignRequestProduct->product_id = $product['product_id'];
+            $campaignRequestProduct->quantity = $product['quantity'];
+            $campaignRequestProduct->campaign_price = $product['campaign_price'];
+            $campaignRequestProduct->product_size = $product['product_size'];
+            $campaignRequestProduct->product_color = $product['product_color'];
+            $campaignRequestProduct->created_by = auth()->user()->id;
+            $campaignRequestProduct->save();
+        }
+        return response()->json(['message' => 'Campaign request created successfully.'], 200);
+    }
+
+    public function showDetails($id)
+    {
+        $data = CampaignRequest::with(['campaign', 'supplier', 'campaignRequestProducts.product'])->get();
+        return view('admin.campaign.details', compact('data'));
     }
 
 }
