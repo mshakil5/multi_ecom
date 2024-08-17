@@ -256,6 +256,13 @@
             </a>
         </li>
 
+        <li class="nav-item">
+            <a href="{{ route('allcampaign') }}" class="nav-link {{ (request()->is('admin/campaigns')) ? 'active' : '' }}">
+                <i class="nav-icon fas fa-bullhorn"></i>
+                <p>Campaigns</p>
+            </a>
+        </li>
+
         <li class="nav-item dropdown {{ request()->is('admin/create-special-offer*') || request()->is('admin/special-offers*') || request()->is('admin/special-offer-history*') ? 'menu-open' : '' }}">
             <a href="#" class="nav-link dropdown-toggle {{ request()->is('admin/create-special-offer*') || request()->is('admin/special-offers*') || request()->is('admin/special-offer-history*') ? 'active' : '' }}">
                 <i class="nav-icon fas fa-warehouse"></i>

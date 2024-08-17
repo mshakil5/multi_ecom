@@ -33,6 +33,7 @@ use App\Http\Controllers\Admin\RelatedProductController;
 use App\Http\Controllers\Admin\BuyOneGetOneController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
 use App\Http\Controllers\Admin\MailContentController;
+use App\Http\Controllers\Admin\CampaignController;
 
 
 Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], function(){
@@ -233,7 +234,6 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::get('/special-offer/{id}/details', [SpecialOfferController::class, 'getOfferDetails'])->name('special-offer.details');
     Route::get('/special-offers/{id}/edit', [SpecialOfferController::class, 'edit'])->name('special-offer.edit');
     Route::post('/update-offer', [SpecialOfferController::class, 'update'])->name('update.offer');
-
     Route::delete('/special-offer/{id}', [SpecialOfferController::class, 'destroy'])->name('special-offer.delete');
 
     // Flash Sells
@@ -243,15 +243,19 @@ Route::group(['prefix' =>'admin/', 'middleware' => ['auth', 'is_admin']], functi
     Route::get('/flash-sell/{id}/details', [FlashSellController::class, 'getFlashSellDetails'])->name('flash-sell.details');
     Route::get('/flash-sell/{id}/edit', [FlashSellController::class, 'edit'])->name('flash-sell.edit');
     Route::post('/update-flash-sell', [FlashSellController::class, 'update'])->name('flash-sell.update');
-
     Route::delete('/flash-sell/{id}', [FlashSellController::class, 'destroy'])->name('flash-sell.delete');
 
+    //Campaign
+    Route::get('/campaigns', [CampaignController::class, 'getCampaigns'])->name('allcampaign');
+    Route::post('/campaign', [CampaignController::class, 'campaignStore'])->name('campaign.store');
+    Route::get('/campaign/{id}/edit', [CampaignController::class, 'campaignEdit']);
+    Route::post('/campaign-update', [CampaignController::class, 'campaignUpdate']);
+    Route::get('/campaign/{id}', [CampaignController::class, 'campaignDelete']);
+
+    //In House sell
     Route::get('/in-house-sell', [InHouseSellController::class, 'inHouseSell'])->name('inhousesell');
-
     Route::post('/in-house-sell', [InHouseSellController::class, 'inHouseSellStore'])->name('inhousesell');
-
     Route::get('/in-house-order', [InHouseSellController::class, 'index'])->name('inhouseorders');
-
     Route::get('/in-house-sell/order/{encoded_order_id}', [InHouseSellController::class, 'generatePDF'])->name('in-house-sell.generate-pdf');
 
     //Delivery Man crud
