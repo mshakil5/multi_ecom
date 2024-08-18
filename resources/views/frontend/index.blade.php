@@ -172,6 +172,26 @@
     <!-- Special Offer End -->
     @endif
 
+    @if($section_status->campaigns == 1)
+        <!-- Campaigns Start -->
+        <div class="container-fluid pt-5">
+            <div class="row px-xl-5">
+                @foreach($campaigns as $campaign)
+                    <div class="col-md-6">
+                        <div class="product-offer mb-30" style="height: 300px;">
+                            <x-image-with-loader class="img-fluid" src="{{ asset('images/campaign_banner/' . $campaign->banner_image) }}" alt="{{ $campaign->title }}"/>
+                            <div class="offer-text">
+                                <h3 class="text-white mb-3">{{ $campaign->title }}</h3>
+                                <a href="{{ route('campaign.details.frontend', $campaign->slug) }}" class="btn btn-primary">View Campaign</a>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+        <!-- Campaigns End -->
+    @endif
+
     <!-- Featured Ad Start -->
     <div class="container-fluid pt-5 pb-3">
         <div class="px-xl-5">

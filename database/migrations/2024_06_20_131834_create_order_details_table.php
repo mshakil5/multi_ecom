@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('price_per_unit', 10, 2);
             $table->decimal('total_price', 10, 2);
             $table->boolean('status')->default(1);
+            $table->unsignedBigInteger('campaign_request_product_id')->nullable();
             $table->string('updated_by')->nullable();
             $table->string('created_by')->nullable();
             $table->timestamps();

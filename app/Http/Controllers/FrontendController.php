@@ -24,6 +24,9 @@ use App\Models\SupplierStock;
 use App\Models\RelatedProduct;
 use App\Models\BuyOneGetOne;
 use App\Models\BundleProduct;
+use App\Models\Campaign;
+use App\Models\CampaignRequest;
+use App\Models\CampaignRequestProduct;
 
 class FrontendController extends Controller
 {
@@ -38,6 +41,12 @@ class FrontendController extends Controller
             ->get();
         $flashSells = FlashSell::select('flash_sell_image', 'flash_sell_name', 'flash_sell_title', 'slug')
             ->where('status', 1)
+            ->whereDate('start_date', '<=', now())
+            ->whereDate('end_date', '>=', now())
+            ->latest()
+            ->get();
+
+        $campaigns = Campaign::select('banner_image', 'title', 'slug')
             ->whereDate('start_date', '<=', now())
             ->whereDate('end_date', '>=', now())
             ->latest()
@@ -100,10 +109,11 @@ class FrontendController extends Controller
         });
 
         $buyOneGetOneProducts = BuyOneGetOne::where('status', 1)
-        ->with(['product' => function($query) {
-            $query->select('id', 'name', 'feature_image', 'price', 'slug');
-        }])
-        ->get()
+            ->with(['product' => function($query) {
+                $query->select('id', 'name', 'feature_image', 'price', 'slug');
+            }])
+            ->get()
+            
         ->map(function($bogo) {
             $bogo->get_products = Product::whereIn('id', json_decode($bogo->get_product_ids))
                 ->select('id', 'name', 'feature_image', 'price', 'slug')
@@ -130,7 +140,7 @@ class FrontendController extends Controller
 
         $categories = Category::where('status', 1)->select('name', 'image', 'slug')->orderBy('id', 'desc')->take(2)->get();
 
-        return view('frontend.index', compact('specialOffers','flashSells','featuredProducts', 'trendingProducts', 'currency', 'recentProducts', 'popularProducts', 'initialCategoryProducts', 'buyOneGetOneProducts', 'bundleProducts', 'section_status', 'advertisements', 'suppliers', 'sliders', 'categories'));
+        return view('frontend.index', compact('specialOffers','flashSells','featuredProducts', 'trendingProducts', 'currency', 'recentProducts', 'popularProducts', 'initialCategoryProducts', 'buyOneGetOneProducts', 'bundleProducts', 'section_status', 'advertisements', 'suppliers', 'sliders', 'categories', 'campaigns'));
     }
 
     public function getCategoryProducts(Request $request)
@@ -352,6 +362,11 @@ class FrontendController extends Controller
                         $product->price = $item['price'];
                         $product->offer_id = 0;
                     }
+                    if (isset($item['campaignId'])) {
+                        $product->campaign_id = $item['campaignId'];
+                        $campaignRequestProduct = CampaignRequestProduct::find($item['campaignId']);
+                        $product->quantity = $campaignRequestProduct->quantity;
+                    }
                 }
             }
         }
@@ -557,6 +572,69 @@ class FrontendController extends Controller
         $products = $productsQuery->get();
 
         return response()->json(['products' => $products]);
+    }
+
+    public function showCampaignDetails($slug)
+    {
+        $campaign = Campaign::where('slug', $slug)->firstOrFail();
+        $campaignRequests = CampaignRequest::with(['supplier', 'campaignRequestProducts.product'])
+            ->where('campaign_id', $campaign->id)
+            ->where('status', 1)
+            ->get();
+
+        $company = CompanyDetails::select('company_name')
+                    ->first();
+        $title = $company->company_name . ' - ' . $campaign->title;
+
+        return view('frontend.campaign', compact('campaign', 'campaignRequests', 'title'));
+    }
+
+    public function showCampaignProduct($slug, $supplierId = null)
+    {
+        $product = Product::where('slug', $slug)->firstOrFail();
+     
+        $campaignPrice = null;
+        $campaignQuantity = null;
+
+        if ($supplierId) {
+            $campaignRequest = CampaignRequest::where('supplier_id', $supplierId)
+                ->where('status', 1)
+                ->first();
+
+            if ($campaignRequest) {
+                $campaignProduct = CampaignRequestProduct::where('campaign_request_id', $campaignRequest->id)
+                    ->where('product_id', $product->id)
+                    ->first();
+
+                if ($campaignProduct) {
+                    $campaignPrice = $campaignProduct->campaign_price;
+                    $campaignQuantity = $campaignProduct->quantity;
+                }
+            }
+        } else{
+            $campaignProduct = CampaignRequestProduct::where('product_id', $product->id)
+            ->whereHas('campaignRequest', function ($query) {
+                $query->where('status', 1);
+                $query->whereNull('supplier_id');
+            })->first();
+
+            if ($campaignProduct) {
+                $campaignPrice = $campaignProduct->campaign_price;
+                $campaignQuantity = $campaignProduct->quantity;
+            }
+
+        }
+
+        // dd($campaignProduct);
+
+        $product->watch = $product->watch + 1;
+        $product->save();
+
+        $company_name = CompanyDetails::value('company_name');
+        $title = $company_name . ' - ' . $product->name;
+        $currency = CompanyDetails::value('currency');
+
+        return view('frontend.product.campaign_single_product', compact('product', 'campaignProduct', 'title', 'campaignPrice', 'currency', 'campaignQuantity'));
     }
 
 }

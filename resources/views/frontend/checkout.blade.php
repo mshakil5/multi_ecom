@@ -437,6 +437,7 @@
                                 } else {
                                     if (result.paymentIntent.status === 'succeeded') {
                                         localStorage.removeItem('cart');
+                                        localStorage.removeItem('wishlist');
                                         updateCartCount();
                                         window.open(response.redirectUrl, '_blank');
                                         window.location.href = '{{ route("frontend.homepage") }}';
@@ -455,6 +456,7 @@
                                     }
                                 }).then(() => {
                                     localStorage.removeItem('cart');
+                                    localStorage.removeItem('wishlist');
                                     window.open(response.redirectUrl, '_blank');
                                     window.location.href = '{{ route("frontend.homepage") }}';
                                 });
@@ -470,12 +472,14 @@
                                     }
                                 }).then(() => {
                                     localStorage.removeItem('cart');
+                                    localStorage.removeItem('wishlist');
                                     window.open(response.redirectUrl, '_blank');
                                     window.location.href = '{{ route("frontend.homepage") }}';
                                 });
                           }  
                         else {
                             localStorage.removeItem('cart');
+                            localStorage.removeItem('wishlist');
                             updateCartCount();
                             window.location.href = response.redirectUrl;
                         }

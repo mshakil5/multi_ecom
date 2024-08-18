@@ -46,7 +46,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="{{ route('supplier.orders.details', ['orderId' => $order->id]) }}" class="btn btn-primary">Details</a>
+                                        <a href="{{ route('supplier.orders.details', ['hashedOrderId' => Crypt::encryptString($order->id)]) }}" class="btn btn-primary">Details</a>
                                     </td>
                                 </tr>
                                 @endforeach

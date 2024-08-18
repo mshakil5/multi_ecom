@@ -32,6 +32,7 @@
                         @foreach ($cart as $item)
                             @php
                                 $isBundle = isset($item['bundleId']);
+                                $isCampaign = isset($item['campaignId']);
                                 $isBogo = isset($item['bogoId']);
                                 $isSupplier = isset($item['supplierId']);
                                 $entity = $isBundle ? \App\Models\BundleProduct::find($item['bundleId']) : \App\Models\Product::find($item['productId']);
@@ -40,7 +41,10 @@
                                 if ($isBundle) {
                                     $bundle = \App\Models\BundleProduct::find($item['bundleId']);
                                     $stock = $bundle->quantity ?? 0;
-                                } elseif ($isBogo) {
+                                }elseif ($isCampaign) {
+                                    $campaign = \App\Models\CampaignRequestProduct::find($item['campaignId']);
+                                    $stock = $campaign->quantity ?? 0;
+                                }elseif ($isBogo) {
                                     $bogo = \App\Models\BuyOneGetOne::find($item['bogoId']);
                                     $stock = $bogo->quantity ?? 0;
                                 } elseif ($isSupplier) {

@@ -40,6 +40,15 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Campaigns</td>
+                    <td>
+                        <select name="campaigns" id="campaigns" class="form-control">
+                            <option value="1" {{ $status->campaigns ? 'selected' : '' }}>On</option>
+                            <option value="0" {{ !$status->campaigns ? 'selected' : '' }}>Off</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
                     <td>Features</td>
                     <td>
                         <select name="features" id="features" class="form-control">

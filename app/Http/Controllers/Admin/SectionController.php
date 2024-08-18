@@ -21,6 +21,7 @@ class SectionController extends Controller
         $request->validate([
             'slider' => 'required|in:0,1',
             'special_offer' => 'required|in:0,1',
+            'campaigns' => 'required|in:0,1',
             'features' => 'required|in:0,1',
             'categories' => 'required|in:0,1',
             'feature_products' => 'required|in:0,1',
@@ -36,6 +37,7 @@ class SectionController extends Controller
 
         $status->slider = $request->input('slider');
         $status->special_offer = $request->input('special_offer');
+        $status->campaigns = $request->input('campaigns');
         $status->features = $request->input('features');
         $status->categories = $request->input('categories');
         $status->feature_products = $request->input('feature_products');

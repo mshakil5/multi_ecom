@@ -25,6 +25,7 @@ use App\Models\PaymentGateway;
 use Omnipay\Omnipay;
 use Stripe\Stripe;
 use Stripe\PaymentIntent;
+use App\Models\CampaignRequestProduct;
 
 class OrderController extends Controller
 {
@@ -72,6 +73,13 @@ class OrderController extends Controller
 
                     if ($supplierStock) {
                         $totalPrice = (float) $item['quantity'] * (float) $supplierStock->price;
+                    }
+                } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                    $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                        ->first();
+
+                    if ($campaign) {
+                        $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
                     }
                 } elseif (isset($item['bogoId']) && $item['bogoId'] !== null) {
                     $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
@@ -167,6 +175,15 @@ class OrderController extends Controller
                             $totalPrice = (float) $item['quantity'] * (float) $supplierStock->price;
                             $supplierStock->quantity -= $item['quantity'];
                             $supplierStock->save();
+                        }
+                    } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                        $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                            ->first();
+
+                        if ($campaign) {
+                            $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
+                            $campaign->quantity -= $item['quantity'];
+                            $campaign->save();
                         }
                     } else if (isset($item['bogoId']) && $item['bogoId'] !== null) {
                         $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
@@ -264,6 +281,16 @@ class OrderController extends Controller
                             }
                             $orderDetail->supplier_id = $item['supplierId'];
 
+                        } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                            $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                                ->first();
+
+                            if ($campaign) {
+                                $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
+                                // $campaign->quantity -= $item['quantity'];
+                                $campaign->save();
+                            }
+                            $orderDetail->campaign_request_product_id = $item['campaignId'];
                         } else if (isset($item['bogoId']) && $item['bogoId'] !== null) {
                             $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
                                 ->first();
@@ -387,6 +414,15 @@ class OrderController extends Controller
                             $supplierStock->quantity -= $item['quantity'];
                             $supplierStock->save();
                         }
+                    } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                        $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                            ->first();
+
+                        if ($campaign) {
+                            $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
+                            $campaign->quantity -= $item['quantity'];
+                            $campaign->save();
+                        }
                     } else if (isset($item['bogoId']) && $item['bogoId'] !== null) {
                         $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
                             ->first();
@@ -483,6 +519,16 @@ class OrderController extends Controller
                             }
                             $orderDetail->supplier_id = $item['supplierId'];
 
+                        } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                            $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                                ->first();
+
+                            if ($campaign) {
+                                $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
+                                // $campaign->quantity -= $item['quantity'];
+                                $campaign->save();
+                            }
+                            $orderDetail->campaign_request_product_id = $item['campaignId'];
                         } else if (isset($item['bogoId']) && $item['bogoId'] !== null) {
                             $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
                                 ->first();
@@ -631,6 +677,15 @@ class OrderController extends Controller
                             $supplierStock->quantity -= $item['quantity'];
                             $supplierStock->save();
                         }
+                    } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                        $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                            ->first();
+
+                        if ($campaign) {
+                            $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
+                            $campaign->quantity -= $item['quantity'];
+                            $campaign->save();
+                        }
                     } else if (isset($item['bogoId']) && $item['bogoId'] !== null) {
                         $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
                             ->first();
@@ -727,6 +782,16 @@ class OrderController extends Controller
                             }
                             $orderDetail->supplier_id = $item['supplierId'];
 
+                        } elseif (isset($item['campaignId']) && $item['campaignId'] !== null) {
+                            $campaign = CampaignRequestProduct::where('product_id', $item['productId'])
+                                ->first();
+
+                            if ($campaign) {
+                                $totalPrice = (float) $item['quantity'] * (float) $campaign->campaign_price;
+                                // $campaign->quantity -= $item['quantity'];
+                                $campaign->save();
+                            }
+                            $orderDetail->campaign_request_product_id = $item['campaignId'];
                         } else if (isset($item['bogoId']) && $item['bogoId'] !== null) {
                             $buyOneGetOne = BuyOneGetOne::where('product_id', $item['productId'])
                                 ->first();

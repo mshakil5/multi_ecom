@@ -13,4 +13,9 @@ class CampaignRequestProduct extends Model
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
+
+    public function campaignRequest()
+    {
+        return $this->belongsTo(CampaignRequest::class, 'campaign_request_id');
+    }
 }

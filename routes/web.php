@@ -57,6 +57,7 @@ Route::get('/sub-category/{slug}', [FrontendController::class, 'showSubCategoryP
 Route::get('/product/{slug}', [FrontendController::class, 'showProduct'])->name('product.show');
 Route::get('/product/{slug}/{offerId?}', [FrontendController::class, 'showProduct'])->name('product.show');
 Route::get('/sup-product/{slug}/{supplierId?}', [FrontendController::class, 'showSupplierProduct'])->name('product.show.supplier');
+Route::get('/campaign/product/{slug}/{supplierId?}', [FrontendController::class, 'showCampaignProduct'])->name('product.show.campaign');
 
 // Buy One Get One Single Product
 Route::get('/bogo/{slug}', [FrontendController::class, 'bogoShowProduct'])->name('product.show.bogo');
@@ -73,6 +74,8 @@ Route::get('/check-coupon', [FrontendController::class, 'checkCoupon']);
 Route::get('/special-offers/{slug}', [SpecialOfferController::class, 'show'])->name('special-offers.show');
 
 Route::get('flash-sells/{slug}', [FlashSellController::class, 'show'])->name('flash-sells.show');
+
+Route::get('/campaign/{slug}', [FrontendController::class, 'showCampaignDetails'])->name('campaign.details.frontend');
 
 Route::get('/shop', [FrontendController::class, 'shop'])->name('frontend.shop');
 
@@ -149,7 +152,7 @@ Route::prefix('supplier')->middleware(['auth.supplier'])->group(function () {
     Route::get('purchase/{purchase}/history', [SupplierController::class, 'getPurchaseHistory'])->name('purchase.history.supplier');
 
     Route::get('orders-history', [SupplierController::class, 'getSupplierOrders'])->name('order.supplier');
-    Route::get('supplier-orders/{orderId}', [SupplierController::class, 'showOrderDetails'])->name('supplier.orders.details');
+    Route::get('supplier-orders/{hashedOrderId}', [SupplierController::class, 'showOrderDetails'])->name('supplier.orders.details');
     Route::get('stocks', [StockController::class, 'index'])->name('stock.supplier');
     Route::post('stock', [StockController::class, 'store']);
     Route::get('stock/{id}/edit', [StockController::class, 'edit']);

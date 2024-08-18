@@ -12,6 +12,8 @@ use App\Models\OrderDetails;
 use App\Models\Order;
 use App\Models\Transaction;
 use App\Models\PurchaseReturn;
+use App\Models\CampaignRequestProduct;
+use Illuminate\Support\Facades\Crypt;
 
 class SupplierController extends Controller
 {
@@ -113,21 +115,29 @@ class SupplierController extends Controller
         $supplierId = Auth::guard('supplier')->user()->id;
         $supplier = Supplier::findOrFail($supplierId);
         $productIds = $supplier->supplierStocks()->pluck('product_id');
-        $orderDetails = OrderDetails::whereIn('product_id', $productIds)->get();
-        
-        $orders = Order::whereHas('orderDetails', function ($query) use ($productIds) {
-            $query->whereIn('product_id', $productIds);
-        })->with(['orderDetails' => function ($query) use ($productIds) {
-            $query->whereIn('product_id', $productIds);
+
+        $campaignRequestProductIds = CampaignRequestProduct::whereHas('campaignRequest', function ($query) use ($supplierId) {
+            $query->where('supplier_id', $supplierId);
+        })->pluck('id');
+
+        $orderDetails = OrderDetails::whereIn('product_id', $productIds)
+            ->orWhereIn('campaign_request_product_id', $campaignRequestProductIds)
+            ->get();
+
+        $orders = Order::whereHas('orderDetails', function ($query) use ($productIds, $campaignRequestProductIds) {
+            $query->whereIn('product_id', $productIds)
+                ->orWhereIn('campaign_request_product_id', $campaignRequestProductIds);
+        })->with(['orderDetails' => function ($query) use ($productIds, $campaignRequestProductIds) {
+            $query->whereIn('product_id', $productIds)
+                ->orWhereIn('campaign_request_product_id', $campaignRequestProductIds);
         }])->get();
         return view('supplier.orders', compact('orders'));
     }
 
-    public function showOrderDetails($orderId)
+    public function showOrderDetails($hashedOrderId)
     {
-        $supplierId = Auth::guard('supplier')->user()->id;
+        $orderId = Crypt::decryptString($hashedOrderId);
         $orderDetails = OrderDetails::where('order_id', $orderId)
-            ->where('supplier_id', $supplierId)
             ->with(['product', 'order.user'])
             ->get();
         $order = $orderDetails->first()->order;

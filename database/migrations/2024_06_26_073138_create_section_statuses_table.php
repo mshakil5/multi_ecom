@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->boolean('slider')->default(1); 
             $table->boolean('special_offer')->default(1); 
+            $table->boolean('campaigns')->default(1); 
             $table->boolean('features')->default(1); 
             $table->boolean('categories')->default(1); 
             $table->boolean('feature_products')->default(1); 

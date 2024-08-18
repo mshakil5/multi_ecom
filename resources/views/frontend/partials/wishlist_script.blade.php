@@ -20,9 +20,10 @@
             var productId = $(this).data('product-id');
             var offerId = $(this).data('offer-id');
             var price = $(this).data('price');
+            var campaignId = $(this).data('campaign-id') || null;
             var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
 
-            var itemIndex = wishlist.findIndex(item => item.productId === productId && item.offerId === offerId);
+            var itemIndex = wishlist.findIndex(item => item.productId === productId && item.offerId === offerId && item.campaignId === campaignId);
             if (itemIndex !== -1) {
                 wishlist.splice(itemIndex, 1);
                 swal({
@@ -34,7 +35,7 @@
                     }
                 });
             } else {
-                wishlist.push({ productId: productId, offerId: offerId, price: price });
+                wishlist.push({ productId: productId, offerId: offerId, price: price, campaignId: campaignId });
                 swal({
                     text: "Added to wishlist",
                     icon: "success",
@@ -53,6 +54,9 @@
         $(document).on('click', '.wishlistBtn', function(e){
             e.preventDefault();
             var wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+
+            console.log(JSON.parse(localStorage.getItem('wishlist')));
+            // localStorage.removeItem('wishlist');
             
             $.ajax({
                 url: "{{ route('wishlist.store') }}",

@@ -12,6 +12,7 @@
             var productId = $(this).data('product-id') || null;
             var offerId = $(this).data('offer-id');
             var price = $(this).data('price');
+            var campaignId = $(this).data('campaign-id') || null;
             var supplierId = $(this).data('supplier-id') || null;
             var bogoId = $(this).data('bogo-id') || null;
             var bundleId = $(this).data('bundle-id') || null;
@@ -28,8 +29,8 @@
                        item.color === selectedColor && 
                        item.offerId === offerId && 
                        item.bogoId === bogoId && 
-                       item.bundleId === bundleId && 
-                       item.supplierId === supplierId;
+                       item.supplierId === supplierId &&
+                       item.campaignId === campaignId;
             });
 
             if (existingItem) {
@@ -44,7 +45,8 @@
                     quantity: quantity,
                     supplierId: supplierId,
                     bogoId: bogoId,
-                    bundleId: bundleId
+                    bundleId: bundleId,
+                    campaignId: campaignId
                 };
                 cart.push(cartItem);
             }
@@ -52,7 +54,7 @@
             localStorage.setItem('cart', JSON.stringify(cart));
             updateCartCount();
 
-            console.log(JSON.parse(localStorage.getItem('cart')));
+            // console.log(JSON.parse(localStorage.getItem('cart')));
 
             swal({
                 text: "Added to cart",
