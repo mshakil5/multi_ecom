@@ -11,11 +11,11 @@
                         <h3 class="card-title">Campaign Details</h3>
                     </div>
                     <div class="card-body">
-                        @if($data->isNotEmpty())
-                             <div class="mb-4">
-                                <h4 class="mb-2"><strong>Title:</strong> {{ $data->first()->campaign->title }}</h4>
-                                <p class="mb-2"><strong>Start Date:</strong> {{ \Carbon\Carbon::parse($data->first()->campaign->start_date)->format('d-m-Y') }}</p>
-                                <p class="mb-2"><strong>End Date:</strong> {{ \Carbon\Carbon::parse($data->first()->campaign->end_date)->format('d-m-Y') }}</p>
+                        @if($data)
+                            <div class="mb-4">
+                                <h4 class="mb-2"><strong>Title:</strong> {{ $data->campaign->title }}</h4>
+                                <p class="mb-2"><strong>Start Date:</strong> {{ \Carbon\Carbon::parse($data->campaign->start_date)->format('d-m-Y') }}</p>
+                                <p class="mb-2"><strong>End Date:</strong> {{ \Carbon\Carbon::parse($data->campaign->end_date)->format('d-m-Y') }}</p>
                             </div>
 
                             <table class="table table-bordered" id="dataTable">
@@ -26,14 +26,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($data as $campaignRequest)
+                                    @foreach($data->campaignRequestProducts as $product)
                                         <tr>
-                                            <td>{{ $campaignRequest->supplier->name ?? 'Admin' }}</td>
+                                            <td>{{ $data->supplier->name ?? 'Admin' }}</td>
                                             <td>
                                                 <ul class="mb-0">
-                                                    @foreach($campaignRequest->campaignRequestProducts as $product)
-                                                        <li>{{ $product->product->name }}</li>
-                                                    @endforeach
+                                                    <li>{{ $product->product->name }}</li>
                                                 </ul>
                                             </td>
                                         </tr>

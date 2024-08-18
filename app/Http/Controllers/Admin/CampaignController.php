@@ -212,8 +212,7 @@ class CampaignController extends Controller
     public function showDetails($id)
     {
         $data = CampaignRequest::with(['campaign', 'supplier', 'campaignRequestProducts.product'])
-        ->where('status', 1)
-        ->get();
+                ->find($id);
         return view('admin.campaign.details', compact('data'));
     }
 
