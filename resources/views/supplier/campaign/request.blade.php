@@ -34,7 +34,7 @@
                                         <select class="form-control" id="product_id" name="product_id">
                                             <option value="">Select...</option>
                                             @foreach($products as $product)
-                                                <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ $product->price }}" data-quantity="{{ $product->supplierStocks->first()->quantity }}">{{ $product->name }}</option>
+                                                <option value="{{ $product->id }}" data-name="{{ $product->name }}" data-price="{{ $product->price }}">{{ $product->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -248,18 +248,11 @@
         $('#product_id').change(function() {
             var selectedOption = $(this).find('option:selected');
             var price = selectedOption.data('price');
-            var maxQuantity = selectedOption.data('quantity');
 
             if (price !== undefined) {
                 $('#campaign_price').val(price);
             } else {
                 $('#campaign_price').val('');
-            }
-
-            if (maxQuantity !== undefined) {
-                $('#quantity').attr('max', maxQuantity).attr('placeholder', 'Enter quantity (Max: ' + maxQuantity + ')').val('');
-            } else {
-                $('#quantity').removeAttr('max').attr('placeholder', 'Enter quantity').val('');
             }
         });
 

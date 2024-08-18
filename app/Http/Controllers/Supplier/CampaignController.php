@@ -9,6 +9,7 @@ use App\Models\CampaignRequest;
 use App\Models\SupplierStock;
 use App\Models\Campaign;
 use App\Models\CampaignRequestProduct;
+use App\Models\Product;
 
 class CampaignController extends Controller
 {
