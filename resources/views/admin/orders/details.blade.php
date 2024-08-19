@@ -36,7 +36,17 @@
                                 <p><strong>Shipping Amount:</strong> {{ number_format($order->shipping_amount, 2) }}</p>
                                 <p><strong>Discount Amount:</strong> {{ number_format($order->discount_amount, 2) }}</p>
                                 <p><strong>Total Amount:</strong> {{ number_format($order->net_amount, 2) }}</p>
-                                <p><strong>Payment Method:</strong> {{ ucfirst($order->payment_method) }}</p>
+                                <p><strong>Payment Method:</strong> 
+                                    @if($order->payment_method === 'paypal')
+                                        PayPal
+                                    @elseif($order->payment_method === 'stripe')
+                                        Stripe
+                                    @elseif($order->payment_method === 'cashOnDelivery')
+                                        Cash On Delivery
+                                    @else
+                                        {{ ucfirst($order->payment_method) }}
+                                    @endif
+                                </p>
                                 <p><strong>Status:</strong> 
                                     @if ($order->status === 1)
                                         Pending

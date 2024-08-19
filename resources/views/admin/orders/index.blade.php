@@ -17,18 +17,16 @@
                                     <th>Email</th>
                                     <th>Phone</th>
                                     <th>Address</th>
-                                    <th>Subtotal</th>
-                                    <th>Shipping</th>
-                                    <th>Discount</th>
-                                    <th>Total</th>
-                                    <th>Payment Method</th>
-                                    <th>Status</th>
-                                    <th>Details</th>
+                                    <th>Status</th>                                    
                                      @if (!empty($orders) && $orders->contains(function ($order) {
                                             return $order->status == 4;
                                         }))
                                         <th>Action</th>
-                                    @endif
+                                     @endif
+                                     <th>Details</th>
+                                    <th>Subtotal</th>
+                                    <th>Total</th>
+                                    <th>Payment Method</th>                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,11 +48,6 @@
                                         {{ optional($order->user)->town ?? $order->town }},
                                         {{ optional($order->user)->postcode ?? $order->postcode }}
                                     </td>
-                                    <td>{{ number_format($order->subtotal_amount, 2) }}</td>
-                                    <td>{{ number_format($order->shipping_amount, 2) }}</td>
-                                    <td>{{ number_format($order->discount_amount, 2) }}</td>
-                                    <td>{{ number_format($order->net_amount, 2) }}</td>
-                                    <td>{{ ucfirst($order->payment_method) }}</td>
                                     <td>
                                         <select class="form-control order-status" data-order-id="{{ $order->id }}">
                                             <option value="1" {{ $order->status == 1 ? 'selected' : '' }}>Pending</option>
@@ -65,9 +58,6 @@
                                             <option value="6" {{ $order->status == 6 ? 'selected' : '' }}>Returned</option>
                                             <option value="7" {{ $order->status == 7 ? 'selected' : '' }}>Cancelled</option>
                                         </select>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('admin.orders.details', ['orderId' => $order->id]) }}" class="btn btn-primary">Details</a>
                                     </td>
                                     @if ($order->status == 4)
                                         <td>
@@ -81,6 +71,12 @@
                                             </select>
                                         </td>
                                     @endif
+                                    <td>
+                                        <a href="{{ route('admin.orders.details', ['orderId' => $order->id]) }}" class="btn btn-primary">Details</a>
+                                    </td>
+                                    <td>{{ number_format($order->subtotal_amount, 2) }}</td>
+                                    <td>{{ number_format($order->net_amount, 2) }}</td>
+                                    <td>{{ ucfirst($order->payment_method) }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

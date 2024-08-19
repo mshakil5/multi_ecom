@@ -13,6 +13,7 @@ use App\Models\Unit;
 use App\Models\ProductImage;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
+use App\Models\CompanyDetails;
 
 class ProductController extends Controller
 {
@@ -287,6 +288,13 @@ class ProductController extends Controller
         $product->save();
 
         return response()->json(['message' => 'Trending status updated successfully!']);
+    }
+
+    public function showProductDetails($id)
+    {
+        $currency = CompanyDetails::value('currency');
+        $product = Product::with('images')->findOrFail($id);
+        return view('admin.product.details', compact('product', 'currency'));
     }
 
 }

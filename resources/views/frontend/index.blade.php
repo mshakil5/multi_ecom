@@ -173,7 +173,7 @@
     @endif
 
     @if($section_status->campaigns == 1)
-        <!-- Campaigns Start -->
+    <!-- Campaigns Start -->
         <div class="container-fluid pt-5">
             <div class="row px-xl-5">
                 @foreach($campaigns as $campaign)
@@ -189,7 +189,7 @@
                 @endforeach
             </div>
         </div>
-        <!-- Campaigns End -->
+    <!-- Campaigns End -->
     @endif
 
     <!-- Featured Ad Start -->
@@ -654,7 +654,6 @@
                                 page: page
                             },
                             success: function(response) {
-                                // console.log(response);
                                 page++;
                                 $carousel.data('page', page);
                                 $.each(response.data, function(index, product) {

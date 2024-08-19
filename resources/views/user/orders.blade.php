@@ -41,7 +41,18 @@
                                 <td>{{ number_format($order->shipping_amount, 2) }}</td>
                                 <td>{{ number_format($order->discount_amount, 2) }}</td> -->
                                 <td>{{ number_format($order->net_amount, 2) }}</td>
-                                <td>{{ ucfirst($order->payment_method) }}</td>
+                                <td>
+                                    @if($order->payment_method === 'paypal')
+                                        PayPal
+                                    @elseif($order->payment_method === 'stripe')
+                                        Stripe
+                                    @elseif($order->payment_method === 'cashOnDelivery')
+                                        Cash On Delivery
+                                    @else
+                                        {{ ucfirst($order->payment_method) }}
+                                    @endif
+                                </td>
+
                                 <td>
                                     <a href="{{ route('generate-pdf', ['encoded_order_id' => base64_encode($order->id)]) }}" class="btn btn-success" target="_blank">
                                     <i class="fas fa-receipt"></i> Invoice

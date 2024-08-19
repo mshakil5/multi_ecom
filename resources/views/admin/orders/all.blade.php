@@ -7,7 +7,7 @@
             <div class="col-12">
                 <div class="card card-secondary">
                     <div class="card-header">
-                        <h3 class="card-title">Pending Orders</h3>
+                        <h3 class="card-title">All Orders</h3>
                     </div>
                     <div class="card-body">
                         <table id="pending-orders-table" class="table table-bordered table-striped table-fluid">

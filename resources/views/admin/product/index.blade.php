@@ -226,7 +226,7 @@
                                     </td>
 
                                     <td>
-                                        <a id="viewBtn" href="#" rid="{{ $data->id }}">
+                                        <a id="viewBtn" href="{{ route('product.show.admin', $data->id) }}">
                                             <i class="fa fa-eye" style="color: #4CAF50; font-size:16px;"></i>
                                         </a>
                                         <a id="EditBtn" rid="{{ $data->id }}">
