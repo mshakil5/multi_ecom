@@ -377,7 +377,6 @@ class FrontendController extends Controller
     public function storeCart(Request $request)
     {
         $request->session()->put('cart', $request->input('cart'));
-
         return response()->json(['success' => true]);
     }
 

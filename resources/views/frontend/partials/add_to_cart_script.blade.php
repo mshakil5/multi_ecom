@@ -73,15 +73,26 @@
             if (index !== undefined) {
                 cart.splice(index, 1);
                 localStorage.setItem('cart', JSON.stringify(cart));
-                swal({
-                    text: "Removed from cart",
-                    icon: "success",
-                    button: {
-                        text: "OK",
-                        className: "swal-button--confirm"
+
+                $.ajax({
+                    url: "{{ route('cart.store') }}",
+                    method: "PUT",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        cart: JSON.stringify(cart)
+                    },
+                    success: function() {
+                        swal({
+                            text: "Removed from cart",
+                            icon: "success",
+                            button: {
+                                text: "OK",
+                                className: "swal-button--confirm"
+                            }
+                        });
+                        updateCartCount();
                     }
                 });
-                updateCartCount();
             }
         });
 
