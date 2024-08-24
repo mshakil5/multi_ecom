@@ -99,7 +99,7 @@
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 
-        $('.order-status').change(function() {
+        $(document).on('change', '.order-status', function() {
             const orderId = $(this).data('order-id');
             const status = $(this).val();
 
