@@ -3,7 +3,6 @@
 @endphp
 
 <style>
-
     .custom-ad-image img {
         width: 100%;
         max-height: 180px;
@@ -25,23 +24,24 @@
             padding-bottom: 8px;
         }
     }
-        #search-results ul {
+
+    #search-results, #search-results-small {
         list-style-type: none;
         padding-left: 0;
         margin: 0;
     }
 
-    #search-results li {
+    #search-results li, #search-results-small li {
         padding: 10px;
         border-bottom: 1px solid #ddd;
     }
 
-    #search-results li a {
+    #search-results li a, #search-results-small li a {
         text-decoration: none;
         color: #333;
     }
 
-    #search-results li:hover {
+    #search-results li:hover, #search-results-small li:hover {
         background-color: #f8f8f8;
     }
 </style>
@@ -102,14 +102,15 @@
         @endforeach
 
     <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-        <div class="col-lg-4">
+        <div class="col-lg-4 d-none d-lg-block">
             <a href="{{ route('frontend.homepage') }}" class="text-decoration-none">
-            @if (!empty($company) && !empty($company->company_logo))
-                <img src="{{ asset('images/company/' . $company->company_logo) }}" alt="Company Logo" class="img-fluid" style="max-height: 75px;">
-            @endif
+                @if (!empty($company) && !empty($company->company_logo))
+                    <img src="{{ asset('images/company/' . $company->company_logo) }}" alt="Company Logo" class="img-fluid" style="max-height: 75px;">
+                @endif
             </a>
         </div>
-        <div class="col-lg-4 col-6 text-left">
+
+        <div class="col-lg-4 col-12 text-center text-lg-left">
             <form id="search-form" class="position-relative">
                 <div class="input-group">
                     <input type="text" id="search-input" class="form-control" placeholder="Search for products">
@@ -122,7 +123,8 @@
             </form>
             <div id="search-results" class="bg-light position-absolute w-100" style="z-index: 1000;"></div>
         </div>
-        <div class="col-lg-4 col-6 text-right">
+
+        <div class="col-lg-4 d-none d-lg-block text-lg-right">
             <p class="m-0">Customer Service</p>
             <h5 class="m-0">
                 @if (!empty($company) && !empty($company->phone1))
@@ -131,4 +133,21 @@
             </h5>
         </div>
     </div>
+
+    <div class="row align-items-center bg-light py-3 px-xl-5 d-lg-none">
+        <div class="col-12 text-left">
+            <form id="search-form-small" class="position-relative">
+                <div class="input-group">
+                    <input type="text" id="search-input-small" class="form-control" placeholder="Search for products">
+                    <div class="input-group-append">
+                        <span class="input-group-text bg-transparent text-primary" id="search-icon-small" style="cursor: pointer;">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+            </form>
+            <div id="search-results-small" class="bg-light position-absolute w-100" style="z-index: 1000;"></div>
+        </div>
+    </div>
+
 </div>

@@ -4,32 +4,48 @@
         const $searchResults = $('#search-results');
         const $searchIcon = $('#search-icon');
 
-        function performSearch() {
-            let query = $searchInput.val();
+        function performSearch(input, resultsContainer) {
+            let query = input.val();
             if (query.length > 2) {
                 $.ajax({
                     url: "{{ route('search.products') }}",
                     method: 'GET',
                     data: { query: query },
                     success: function(data) {
-                        $searchResults.html(data);
+                        resultsContainer.html(data);
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching search results:', error);
-                        $searchResults.html('<div class="p-2">An error occurred</div>');
+                        resultsContainer.html('<div class="p-2">An error occurred</div>');
                     }
                 });
             } else {
-                $searchResults.html('');
+                resultsContainer.html('');
             }
         }
 
-        $searchInput.on('keyup', performSearch);
-        $searchIcon.on('click', performSearch);
+        $searchInput.on('keyup', function() {
+            performSearch($searchInput, $searchResults);
+        });
+        $searchIcon.on('click', function() {
+            performSearch($searchInput, $searchResults);
+        });
+
+        const $searchInputSmall = $('#search-input-small');
+        const $searchResultsSmall = $('#search-results-small');
+        const $searchIconSmall = $('#search-icon-small');
+
+        $searchInputSmall.on('keyup', function() {
+            performSearch($searchInputSmall, $searchResultsSmall);
+        });
+        $searchIconSmall.on('click', function() {
+            performSearch($searchInputSmall, $searchResultsSmall);
+        });
 
         $(document).on('click', function(e) {
-            if (!$(e.target).closest('#search-form').length) {
+            if (!$(e.target).closest('#search-form, #search-form-small').length) {
                 $searchResults.html('');
+                $searchResultsSmall.html('');
             }
         });
     });
